@@ -60,10 +60,25 @@ exports.SelectProfile = (req,res) => {
 
 exports.UpdateProfile = (req,res) => {
 
-    let UserName = req.headers['username'];
-    ProfileModel.find({
-        UserName:UserName
-    }).then(
+    let reqBody = req.body;
+
+    let _id = reqBody['_id'];
+
+    let FirstName = reqBody['FirstName'];
+    let LastName = reqBody['LastName'];
+    let EmailAddress = reqBody['EmailAddress'];
+    let MobileNumber = reqBody['MobileNumber'];
+    let Password = reqBody['Password'];
+
+    let PostBody = {
+        FirstName: FirstName,
+        LastName: LastName,
+        EmailAddress: EmailAddress,
+        MobileNumber: MobileNumber,
+        Password: Password
+    };
+
+    ProfileModel.updateOne({_id:_id},{$set:PostBody},{upsert: true}).then(
         (data) => { 
             return res.status(200).json({status:'success',data:data});  
         },
